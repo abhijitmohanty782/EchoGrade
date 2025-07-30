@@ -43,24 +43,27 @@ def get_models():
     )
 
 def fetch_answers_from_cosmos(question_id: str, user_id: str, master_container, student_container):
-    # Fetch master answer (by question_id)
+    # Fetch master answer
     master_query = f"SELECT * FROM c WHERE c.questionId = '{question_id}'"
     master_items = list(master_container.query_items(query=master_query, enable_cross_partition_query=True))
     if not master_items:
         return {"error": "❌ Master answer not found."}
     master_answer = master_items[0]["answerText"]
 
-    # Fetch student answers (by question_id and user_id)
+    # Fetch most recent student answer (ordered by submittedAt)
     student_query = (
-        f"SELECT * FROM c WHERE c.questionId = '{question_id}' AND c.userId = '{user_id}'"
+        f"SELECT * FROM c WHERE c.questionId = '{question_id}' AND c.userId = '{user_id}' "
+        f"ORDER BY c.submittedAt DESC"
     )
     student_items = list(student_container.query_items(query=student_query, enable_cross_partition_query=True))
     if not student_items:
         return {"error": "❌ No student answers found for this user and question."}
 
+    latest_answer = student_items[0]
+
     return {
         "master_answer": master_answer,
-        "student_answers": student_items  # a list of dictionaries
+        "student_answers": [latest_answer]
     }
 
 

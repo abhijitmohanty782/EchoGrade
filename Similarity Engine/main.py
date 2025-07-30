@@ -1,9 +1,12 @@
 from fastapi import FastAPI, HTTPException
+from fastapi import Request
 from pydantic import BaseModel
+import uuid
 from contextlib import asynccontextmanager
 from typing import List
 from azure.cosmos import CosmosClient
 from core.model import analyze_question_from_db  # ✅ Import from model.py
+from datetime import datetime,timezone
 
 from core import model_instances
 
@@ -24,8 +27,8 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 COSMOS_ENDPOINT = os.getenv("COSMOS_ENDPOINT")
 COSMOS_KEY = os.getenv("COSMOS_KEY")
 DATABASE_NAME = "tutor"
-MASTER_CONTAINER_NAME = "masteranswer"
-STUDENT_CONTAINER_NAME = "studentanswer"
+MASTER_CONTAINER_NAME = "echograde-masteranswer"
+STUDENT_CONTAINER_NAME = "echograde-studentanswer"
 
 # Define the lifespan context for app startup/shutdown
 @asynccontextmanager
@@ -72,6 +75,12 @@ class AnswerUploadRequest(BaseModel):
     questionId: str
     master_answer: str
     student_answers: List[StudentAnswer]
+    
+# Request schema for individual student answer submission
+class StudentAnswerSubmission(BaseModel):
+    questionId: str
+    questionText: str
+    answerText: str
 
 @app.get("/")
 def root():
@@ -93,3 +102,25 @@ def run_analysis_from_db(question_id: str, user_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/answers")
+async def store_student_answer(answer: StudentAnswerSubmission, request: Request):
+    try:
+        # TEMPORARY static userId until auth is added
+        user_id = "test-user-01"  # Replace with actual user ID later (e.g., from JWT)
+
+        new_answer = {
+            "id": str(uuid.uuid4()),  # ✅ Required by Cosmos DB
+            "userId": user_id,
+            "questionId": answer.questionId,
+            "questionText": answer.questionText,
+            "answerText": answer.answerText,
+            "submittedAt": datetime.now(timezone.utc).isoformat()  # ✅ timezone-aware
+        }
+
+        container = request.app.state.student_container
+        saved_answer = container.create_item(body=new_answer)
+        return saved_answer
+
+    except Exception as e:
+        print("Error saving student answer:", e)
+        raise HTTPException(status_code=500, detail="Failed to submit student answer")
