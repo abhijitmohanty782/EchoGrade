@@ -1,3 +1,4 @@
+# EchoGrade Frontend Deployment Workflow
 name: Deploy EchoGrade Frontend to Azure
 on:
   push:
