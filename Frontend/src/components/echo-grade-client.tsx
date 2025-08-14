@@ -9,6 +9,7 @@ import { ScoreDisplay } from "@/components/score-display";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { config } from "@/config/env";
+import logoImage from '../app/echograde_logo.png'; // <-- 1. IMPORT THE IMAGE
 
 const questionData = {
   questionId: "q101",
@@ -135,7 +136,7 @@ export function EchoGradeClient() {
     <div className="max-w-4xl mx-auto space-y-8">
       <header className="text-center space-y-6">
         <div className="flex justify-center">
-          <img src="/src/app/echograde_logo.png" alt="EchoGrade Logo" className="size-20 object-contain drop-shadow-sm" />
+          <img src={logoImage} alt="EchoGrade Logo" className="size-20 object-contain drop-shadow-sm" />
         </div>
         <div className="space-y-3">
           <h1 className="font-headline text-5xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">EchoGrade</h1>
