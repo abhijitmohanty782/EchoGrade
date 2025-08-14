@@ -1,6 +1,18 @@
 # Project EchoGrade 🤖✍️
 
-An AI-powered assessment system designed to bring objectivity and scale to the grading of mathematical proofs.
+An AI-powered assessment system designed to bring objectivity and scale to the grading of **Mathematical Proofs**.
+
+---
+
+## 🚀 Live Demo
+
+**You can access the live application here:** [**https://echograde.onrender.com**](https://echograde.onrender.com)
+
+---
+
+## ✨ Visual Demo
+
+![EchoGrade Demo GIF](./public/demo.gif)
 
 ---
 
@@ -48,8 +60,8 @@ The final step synthesizes all the collected data. A weighted algorithm intellig
 
 * **Core Logic**: `Python`
 * **NLP Models**: `RAG`, `SBERT`, `E5`
-* **Database**: `PostgreSQL` / `MongoDB`
-* **API Framework**: `FastAPI` / `Flask`
+* **Database**: `CosmosDB`
+* **API Framework**: `FastAPI`
 
 ---
 
@@ -59,6 +71,53 @@ To get a local copy up and running, follow these simple steps.
 
 ### Prerequisites
 
-Ensure you have Python 3.8+ and pip installed.
-```sh
-python --version
+* Node.js and npm: [https://nodejs.org/](https://nodejs.org/)
+* Python 3.8+ and pip: [https://www.python.org/](https://www.python.org/)
+
+### Installation & Setup
+
+1.  **Clone the repository**
+    ```sh
+    git clone [https://github.com/your-username/echograde.git](https://github.com/your-username/echograde.git)
+    cd echograde
+    ```
+
+2.  **Set up the Backend** (Open a new terminal for this)
+    ```sh
+    # Navigate to the backend directory
+    cd backend
+
+    # Create and activate a virtual environment
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
+    # Install required Python packages
+    pip install -r requirements.txt
+    ```
+
+3.  **Set up the Frontend** (Open another new terminal)
+    ```sh
+    # Navigate to the frontend directory
+    cd frontend
+
+    # Install npm packages
+    npm install
+    ```
+
+### Running the Application
+
+You need to have both the backend and frontend servers running simultaneously.
+
+1.  **Start the Backend Server** (in the backend terminal)
+    ```sh
+    # Make sure you are in the 'backend' directory with the virtual environment active
+    uvicorn main:app --reload
+    ```
+    Your backend API should now be running, typically at `http://127.0.0.1:8000`.
+
+2.  **Start the Frontend Development Server** (in the frontend terminal)
+    ```sh
+    # Make sure you are in the 'frontend' directory
+    npm run dev
+    ```
+    Your React application should now be running, typically at `http://localhost:5173`. You can open this URL in your browser to use the app.
