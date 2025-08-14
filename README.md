@@ -12,7 +12,7 @@ An AI-powered assessment system designed to bring objectivity and scale to the g
 
 ## ✨ Visual Demo
 
-![EchoGrade Demo GIF](./public/demo.gif)
+![EchoGrade Demo GIF](./Public/demo.gif)
 
 ---
 
